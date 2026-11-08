@@ -5,7 +5,7 @@ import (
 	"strings"
 )
 
-// Color is one of the colors supported by the color function in includes.sh.
+// Color is one of the colors used by the command output.
 type Color string
 
 const (

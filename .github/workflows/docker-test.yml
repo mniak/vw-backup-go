@@ -7,9 +7,9 @@ on:
       - .github/workflows/docker-test.yml
       - Dockerfile
       - go.mod
+      - go.sum
       - cmd/**
       - internal/**
-      - scripts/**
       - tests/**
 
 jobs:

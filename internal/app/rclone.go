@@ -9,7 +9,7 @@ import (
 	"strings"
 )
 
-// CheckRcloneConnection mirrors check_rclone_connection from includes.sh.
+// CheckRcloneConnection validates the rclone flags, configuration and remotes.
 func (a *App) CheckRcloneConnection(strategy string) error {
 	if err := a.rcloneDiscardingOutput("version"); err != nil {
 		PrintColor(Red, "illegal rclone global flags")

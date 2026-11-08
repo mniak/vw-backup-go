@@ -41,24 +41,16 @@ type App struct {
 	UploadFile string
 }
 
-func NewApp() *App {
-	return &App{}
+func NewApp(config *Config) *App {
+	return &App{
+		Config:   config,
+		Notifier: NewNotifier(config),
+	}
 }
 
-// Run executes the same steps as the original backup.sh entry point.
+// Run executes one full backup cycle.
 func (a *App) Run() error {
 	PrintColor(Blue, "running the backup program at "+timestamp())
-
-	config, err := LoadConfig()
-	if err != nil {
-		return &Fatal{Message: err.Error()}
-	}
-	a.Config = config
-	a.Notifier = NewNotifier(config)
-
-	if err := config.ConfigurePostgresql(); err != nil {
-		fmt.Fprintln(os.Stderr, err)
-	}
 
 	a.Notifier.Send("start", "Start backup at "+timestamp())
 

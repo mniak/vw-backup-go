@@ -81,7 +81,7 @@ type Config struct {
 }
 
 // LoadConfig reads the environment (including the optional /.env file) and
-// applies the same defaults and normalization as init_env in includes.sh.
+// applies defaults and normalization shared by the commands.
 func LoadConfig() (*Config, error) {
 	loadDotEnv(EnvFile)
 
@@ -246,7 +246,7 @@ func (c *Config) initTimezone() {
 	}
 }
 
-// ConfigurePostgresql writes ~/.pgpass, matching configure_postgresql in includes.sh.
+// ConfigurePostgresql writes ~/.pgpass for pg_dump and pg_restore.
 func (c *Config) ConfigurePostgresql() error {
 	if c.DBType != "POSTGRESQL" {
 		return nil
@@ -326,7 +326,7 @@ func (c *Config) printSummary() {
 	PrintColor(Yellow, "========================================")
 }
 
-// loadDotEnv imports /.env variables with the DOTENV_ prefix, as export_env_file does.
+// loadDotEnv imports /.env variables with the DOTENV_ prefix.
 func loadDotEnv(path string) {
 	data, err := os.ReadFile(path)
 	if err != nil {
@@ -362,7 +362,7 @@ func loadDotEnv(path string) {
 	}
 }
 
-// getEnv implements the same priority as get_env in includes.sh.
+// getEnv resolves a variable using the documented secret-file priority.
 func getEnv(name string) string {
 	var value string
 

@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-// Notifier sends the same mail and ping notifications as send_notification in includes.sh.
+// Notifier sends mail and ping notifications for backup events.
 type Notifier struct {
 	Config *Config
 }
@@ -44,6 +44,16 @@ func (n *Notifier) Send(status, content string) {
 		n.sendPing("failure", subjectFailure, content)
 		n.sendPing("completion", subjectFailure, content)
 	}
+}
+
+// SendPing sends one health-check ping.
+func (n *Notifier) SendPing(status, subject, content string) {
+	n.sendPing(status, subject, content)
+}
+
+// SendMail sends one notification mail.
+func (n *Notifier) SendMail(subject, content string) {
+	n.sendMail(subject, content)
 }
 
 func (n *Notifier) sendPing(status, subject, content string) {
