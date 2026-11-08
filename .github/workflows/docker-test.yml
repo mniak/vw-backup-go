@@ -6,6 +6,9 @@ on:
     paths:
       - .github/workflows/docker-test.yml
       - Dockerfile
+      - go.mod
+      - cmd/**
+      - internal/**
       - scripts/**
       - tests/**
 

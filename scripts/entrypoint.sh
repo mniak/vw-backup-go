@@ -55,9 +55,13 @@ function configure_timezone() {
 }
 
 function configure_cron() {
-    local FIND_CRON_COUNT="$(grep -c 'backup.sh' "${CRON_CONFIG_FILE}" 2> /dev/null)"
+    local FIND_CRON_COUNT="$(grep -c '/app/backup$' "${CRON_CONFIG_FILE}" 2> /dev/null)"
+    # remove entries added by versions that used the shell script
+    if [[ -f "${CRON_CONFIG_FILE}" ]]; then
+        sed -i '/backup\.sh/d' "${CRON_CONFIG_FILE}"
+    fi
     if [[ "${FIND_CRON_COUNT}" -eq 0 ]]; then
-        echo "${CRON} bash /app/backup.sh" >> "${CRON_CONFIG_FILE}"
+        echo "${CRON} /app/backup" >> "${CRON_CONFIG_FILE}"
     fi
 }
 
@@ -71,7 +75,7 @@ configure_cron
 if [[ "$1" == "backup" ]]; then
     color yellow "Manually triggering a backup will only execute the backup script once, and the container will exit upon completion."
 
-    bash "/app/backup.sh"
+    "/app/backup"
 
     exit 0
 fi
